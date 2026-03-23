@@ -1,0 +1,61 @@
+track_id,title,artist_name,genre,mood,era,tempo_bpm,year,popularity
+801,Blinding Lights,The Weeknd,Pop,Energetic,2020s,171,2020,90
+802,Take On Me,A-Ha,Pop,Happy,1980s,169,1985,85
+803,Smells Like Teen Spirit,Nirvana,Rock,Angry,1990s,116,1991,88
+804,Shape Of You,Ed Sheeran,Pop,Romantic,2010s,96,2017,95
+805,Strobe,Deadmau5,Edm,Energetic,2000s,128,2009,78
+806,Fly Me To The Moon,Frank Sinatra,Jazz,Relaxed,1980s,70,1985,82
+807,Bohemian Rhapsody,Queen,Rock,Dramatic,1980s,144,1980,92
+808,Enter Sandman,Metallica,Metal,Energetic,1990s,123,1991,87
+809,Clocks,Coldplay,Indie,Focus,2000s,131,2002,84
+810,Thinking Out Loud,Ed Sheeran,Pop,Romantic,2010s,79,2014,91
+811,Levels,Avicii,Edm,Energetic,2010s,126,2011,93
+812,Wonderwall,Oasis,Rock,Relaxed,1990s,87,1995,89
+813,Billie Jean,Michael Jackson,Pop,Energetic,1980s,117,1982,95
+814,Blue In Green,Miles Davis,Jazz,Relaxed,1980s,60,1980,80
+815,Nothing Else Matters,Metallica,Metal,Romantic,1990s,142,1992,86
+816,Fix You,Coldplay,Indie,Sad,2000s,138,2005,90
+817,Someone Like You,Adele,Pop,Sad,2010s,67,2011,92
+818,Animals,Martin Garrix,Edm,Energetic,2010s,128,2013,88
+819,Back In Black,Acdc,Rock,Energetic,1980s,94,1980,93
+820,Happy,Pharrell Williams,Pop,Happy,2010s,160,2013,94
+821,Hotel California,Eagles,Rock,Relaxed,1980s,75,1980,91
+822,Take Five,Dave Brubeck,Jazz,Focus,1980s,84,1980,83
+823,Fade To Black,Metallica,Metal,Sad,1980s,113,1984,85
+824,Viva La Vida,Coldplay,Indie,Happy,2000s,138,2008,92
+825,Rather Be,Clean Bandit,Edm,Happy,2010s,121,2014,86
+826,Rolling In The Deep,Adele,Pop,Angry,2010s,105,2010,94
+827,Sweet Child O Mine,Guns N Roses,Rock,Energetic,1980s,125,1987,90
+828,Summertime Ella Fitzgerald,Ella Fitzgerald,Jazz,Relaxed,1980s,62,1980,78
+829,Master Of Puppets,Metallica,Metal,Angry,1980s,212,1986,88
+830,Yellow,Coldplay,Indie,Romantic,2000s,86,2000,89
+831,Titanium,David Guetta,Edm,Energetic,2010s,126,2011,92
+832,Uptown Funk,Bruno Mars,Pop,Happy,2010s,115,2014,96
+833,Stairway To Heaven,Led Zeppelin,Rock,Dramatic,1980s,82,1980,95
+834,Autumn Leaves,Bill Evans,Jazz,Relaxed,1980s,66,1980,80
+835,The Trooper,Iron Maiden,Metal,Energetic,1980s,160,1983,84
+836,Sparks,Coldplay,Indie,Relaxed,2000s,73,2000,82
+837,Wake Me Up,Avicii,Edm,Happy,2010s,124,2013,94
+838,Levitating,Dua Lipa,Pop,Energetic,2020s,103,2020,93
+839,Highway To Hell,Acdc,Rock,Energetic,1980s,116,1980,91
+840,So What,Miles Davis,Jazz,Focus,1980s,71,1980,85
+841,Hallowed Be Thy Name,Iron Maiden,Metal,Dramatic,1980s,90,1982,83
+842,Paradise,Coldplay,Indie,Happy,2010s,140,2011,90
+843,Animals Remix,Martin Garrix,Edm,Energetic,2010s,128,2014,82
+844,As It Was,Harry Styles,Pop,Relaxed,2020s,174,2022,92
+845,Thunderstruck,Acdc,Rock,Energetic,1990s,134,1990,94
+846,Take The A Train,Duke Ellington,Jazz,Happy,1980s,120,1980,79
+847,Run To The Hills,Iron Maiden,Metal,Energetic,1980s,172,1982,85
+848,Speed Of Sound,Coldplay,Indie,Focus,2000s,124,2005,84
+849,Don'T You Worry Child,Swedish House Mafia,Edm,Happy,2010s,129,2012,91
+850,Watermelon Sugar,Harry Styles,Pop,Happy,2020s,95,2020,90
+851,Another One Bites The Dust,Queen,Rock,Energetic,1980s,110,1980,93
+852,Blue Monk,Thelonious Monk,Jazz,Focus,1980s,74,1980,78
+853,Paranoid,Black Sabbath,Metal,Angry,1980s,164,1980,86
+854,Adventure Of A Lifetime,Coldplay,Indie,Happy,2010s,112,2015,89
+855,Scary Monsters,Skrillex,Edm,Energetic,2010s,140,2010,87
+856,Don'T Start Now,Dua Lipa,Pop,Energetic,2020s,124,2020,94
+857,We Will Rock You,Queen,Rock,Energetic,1980s,81,1980,96
+858,Take The Coltrane,John Coltrane,Jazz,Focus,1980s,130,1980,82
+859,Seek And Destroy,Metallica,Metal,Angry,1980s,139,1983,84
+860,Shiver,Coldplay,Indie,Romantic,2000s,98,2000,83

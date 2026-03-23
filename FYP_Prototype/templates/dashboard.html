@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Next Track Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body
+{
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    margin: 0;
+    padding: 0;
+    color: #1f2937;
+}
+
+.container
+{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.header
+{
+    margin-bottom: 24px;
+}
+
+.header h1
+{
+    margin: 0 0 8px 0;
+    font-size: 32px;
+}
+
+.header p
+{
+    margin: 0;
+    color: #6b7280;
+}
+
+.grid
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.card
+{
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.card h2
+{
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.badge
+{
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 12px;
+    color: white;
+}
+
+.green
+{
+    background: #16a34a;
+}
+
+.red
+{
+    background: #dc2626;
+}
+
+.blue
+{
+    background: #2563eb;
+}
+
+.orange
+{
+    background: #ea580c;
+}
+
+.gray
+{
+    background: #6b7280;
+}
+
+label
+{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+select,
+input
+{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+}
+
+button
+{
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover
+{
+    background: #1d4ed8;
+}
+
+.play-btn
+{
+    width: auto;
+    margin-top: 0;
+    padding: 6px 12px;
+    background: #2563eb;
+}
+
+.details-btn
+{
+    width: auto;
+    margin-top: 0;
+    padding: 6px 12px;
+    background: #0f766e;
+}
+
+.details-btn:hover
+{
+    background: #115e59;
+}
+
+.muted
+{
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.stat
+{
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.two-col
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.three-col
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.table-wrap
+{
+    overflow-x: auto;
+}
+
+table
+{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td
+{
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th
+{
+    background: #f9fafb;
+    white-space: nowrap;
+}
+
+.seed-grid
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap: 16px;
+}
+
+.seed-meta-card
+{
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    background: #f9fafb;
+}
+
+.seed-meta-title
+{
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.seed-meta-row
+{
+    margin-bottom: 8px;
+}
+
+.seed-meta-row .muted
+{
+    display: block;
+    margin-bottom: 2px;
+}
+
+.chart-wrap
+{
+    position: relative;
+    width: 100%;
+    height: 350px;
+}
+
+.footer
+{
+    text-align: center;
+    margin-top: 24px;
+    color: #6b7280;
+}
+
+.summary-grid
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 16px;
+}
+
+.summary-box
+{
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.summary-label
+{
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.summary-value
+{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.details-row
+{
+    display: none;
+    background: #f8fafc;
+}
+
+.details-cell
+{
+    padding: 16px;
+}
+
+.details-grid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.detail-card
+{
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    background: white;
+}
+
+.detail-card h4
+{
+    margin: 0 0 10px 0;
+    font-size: 15px;
+}
+
+.kv
+{
+    margin-bottom: 8px;
+}
+
+.kv .muted
+{
+    display: block;
+    margin-bottom: 2px;
+}
+
+.per-seed-table
+{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.per-seed-table th,
+.per-seed-table td
+{
+    border: 1px solid #e5e7eb;
+    padding: 8px;
+}
+
+.small
+{
+    font-size: 12px;
+}
+
+.preference-box
+{
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.preference-grid
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.rec-badge
+{
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.conf-high
+{
+    background: #16a34a;
+}
+
+.conf-medium
+{
+    background: #ea580c;
+}
+
+.conf-low
+{
+    background: #6b7280;
+}
+
+.mode-seed
+{
+    background: #2563eb;
+}
+
+.mode-hybrid
+{
+    background: #7c3aed;
+}
+
+.mode-cold
+{
+    background: #0f766e;
+}
+
+.reason-box
+{
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+}
+
+.inline-note
+{
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 6px;
+}
+
+.section-spacer
+{
+    margin-top: 20px;
+}
+
+@media (max-width: 900px)
+{
+    .details-grid
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .three-col
+    {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Next Track Dashboard</h1>
+        <p>Music Recommendation API Dashboard</p>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>API Status</h2>
+            <div id="healthBadge" class="badge red">Checking...</div>
+            <div class="stat" id="trackCount">-</div>
+            <div class="muted">Total tracks loaded</div>
+        </div>
+
+        <div class="card">
+            <h2>Generate Recommendations</h2>
+
+            <label>Select Seed Tracks (Ctrl / Cmd to select multiple)</label>
+            <select id="trackSelect" multiple size="8">
+                <option>Loading tracks...</option>
+            </select>
+
+            <div class="inline-note">
+                You can use seed tracks, preferences or both.
+            </div>
+
+            <div class="section-spacer"></div>
+
+            <label>Genre</label>
+            <input id="genreInput" type="text" placeholder="e.g. jazz">
+
+            <label>Mood</label>
+            <input id="moodInput" type="text" placeholder="e.g. relaxed">
+
+            <label>Era</label>
+            <input id="eraInput" type="text" placeholder="e.g. 1960s">
+
+            <div class="three-col">
+                <div>
+                    <label>Tempo BPM</label>
+                    <input id="tempoInput" type="number" placeholder="e.g. 95">
+                </div>
+
+                <div>
+                    <label>Year</label>
+                    <input id="yearInput" type="number" placeholder="e.g. 1960">
+                </div>
+
+                <div>
+                    <label>Limit</label>
+                    <input id="limitInput" type="number" value="10" min="1" max="50">
+                </div>
+            </div>
+
+            <button onclick="loadRecommendations()">Get Recommendations</button>
+        </div>
+
+        <div class="card">
+            <h2>Recommendation Overview</h2>
+
+            <div class="summary-grid">
+                <div class="summary-box">
+                    <div class="summary-label">Recommendation Mode</div>
+                    <div class="summary-value" id="recommendationMode">-</div>
+                </div>
+
+                <div class="summary-box">
+                    <div class="summary-label">Total Recommendations</div>
+                    <div class="summary-value" id="distributionTotal">-</div>
+                </div>
+
+                <div class="summary-box">
+                    <div class="summary-label">Unique Seeds</div>
+                    <div class="summary-value" id="distributionGroups">-</div>
+                </div>
+            </div>
+
+            <div class="inline-note" id="modeDescription">
+                No recommendation request yet.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h2>Input Summary</h2>
+        <div class="summary-grid">
+            <div class="summary-box">
+                <div class="summary-label">Average Seed Tempo</div>
+                <div class="summary-value" id="avgSeedTempo">-</div>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-label">Average Seed Year</div>
+                <div class="summary-value" id="avgSeedYear">-</div>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-label">Number of Seeds</div>
+                <div class="summary-value" id="seedCount">-</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h2>Preference Input Summary</h2>
+        <div id="preferenceSummaryBox" class="preference-box">
+            <div class="muted">No preferences entered yet.</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h2>Seed Track Metadata</h2>
+        <div id="seedMetadataContainer" class="seed-grid">
+            <div class="muted">No seed tracks selected yet.</div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h2>Similarity Score Distribution</h2>
+        <div class="chart-wrap">
+            <canvas id="similarityChart"></canvas>
+        </div>
+        <div class="inline-note" id="distributionNote">
+            Distribution is shown for seed-based requests only.
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+        <h2>Recommended Tracks</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Track</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Mood</th>
+                        <th>Era</th>
+                        <th>Tempo</th>
+                        <th>Year</th>
+                        <th>Similarity</th>
+                        <th>Mode</th>
+                        <th>Confidence</th>
+                        <th>Explain</th>
+                        <th>Play</th>
+                    </tr>
+                </thead>
+
+                <tbody id="recommendationTableBody">
+                    <tr>
+                        <td colspan="13" class="muted">No recommendations loaded yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        Next Track FYP Dashboard
+    </div>
+
+</div>
+
+<script>
+let tracksData = [];
+let similarityChart = null;
+
+async function fetchHealth()
+{
+    try
+    {
+        const r = await fetch("/health");
+        const badge = document.getElementById("healthBadge");
+
+        if (r.ok)
+        {
+            badge.textContent = "ONLINE";
+            badge.classList.remove("red");
+            badge.classList.add("green");
+        }
+        else
+        {
+            badge.textContent = "ERROR";
+            badge.classList.remove("green");
+            badge.classList.add("red");
+        }
+    }
+    catch (error)
+    {
+        console.error(error);
+        const badge = document.getElementById("healthBadge");
+        badge.textContent = "OFFLINE";
+        badge.classList.remove("green");
+        badge.classList.add("red");
+    }
+}
+
+async function fetchTracks()
+{
+    try
+    {
+        const r = await fetch("/tracks");
+        const data = await r.json();
+
+        let tracks = data.results || data;
+
+        if (!Array.isArray(tracks))
+        {
+            tracks = [];
+        }
+
+        tracksData = tracks;
+
+        document.getElementById("trackCount").textContent = tracks.length;
+
+        const select = document.getElementById("trackSelect");
+        select.innerHTML = "";
+
+        if (tracks.length === 0)
+        {
+            select.innerHTML = "<option>No tracks found</option>";
+            return;
+        }
+
+        tracks.forEach(function(track)
+        {
+            const option = document.createElement("option");
+            option.value = track.track_id;
+            option.textContent = (track.title || "-") + " - " + (track.artist_name || "-");
+            select.appendChild(option);
+        });
+    }
+    catch (error)
+    {
+        console.error(error);
+        document.getElementById("trackCount").textContent = "Error";
+    }
+}
+
+function getSelectedSeeds()
+{
+    const select = document.getElementById("trackSelect");
+    const selected = [];
+
+    for (let i = 0; i < select.options.length; i++)
+    {
+        if (select.options[i].selected)
+        {
+            selected.push(select.options[i].value);
+        }
+    }
+
+    return selected;
+}
+
+function getPreferenceInputs()
+{
+    return {
+        genre: document.getElementById("genreInput").value.trim(),
+        mood: document.getElementById("moodInput").value.trim(),
+        era: document.getElementById("eraInput").value.trim(),
+        tempo_bpm: document.getElementById("tempoInput").value.trim(),
+        year: document.getElementById("yearInput").value.trim(),
+        limit: document.getElementById("limitInput").value.trim() || "10"
+    };
+}
+
+function safeValue(value, suffix = "")
+{
+    if (value === undefined || value === null || value === "")
+    {
+        return "-";
+    }
+
+    return String(value) + suffix;
+}
+
+function formatNumber(value, decimals = 2)
+{
+    if (value === undefined || value === null || value === "")
+    {
+        return "-";
+    }
+
+    const num = Number(value);
+
+    if (Number.isNaN(num))
+    {
+        return "-";
+    }
+
+    return num.toFixed(decimals);
+}
+
+function getModeLabel(mode)
+{
+    if (mode === "seed_based")
+    {
+        return "<span class='rec-badge mode-seed'>Seed Based</span>";
+    }
+
+    if (mode === "hybrid")
+    {
+        return "<span class='rec-badge mode-hybrid'>Hybrid</span>";
+    }
+
+    if (mode === "cold_start")
+    {
+        return "<span class='rec-badge mode-cold'>Cold Start</span>";
+    }
+
+    return "<span class='rec-badge gray'>" + safeValue(mode) + "</span>";
+}
+
+function getConfidenceLabel(confidence)
+{
+    if (confidence === "high")
+    {
+        return "<span class='rec-badge conf-high'>High</span>";
+    }
+
+    if (confidence === "medium")
+    {
+        return "<span class='rec-badge conf-medium'>Medium</span>";
+    }
+
+    return "<span class='rec-badge conf-low'>Low</span>";
+}
+
+function renderSeedMetadata(seeds)
+{
+    const container = document.getElementById("seedMetadataContainer");
+    container.innerHTML = "";
+
+    if (seeds.length === 0)
+    {
+        container.innerHTML = "<div class='muted'>No seed tracks selected yet.</div>";
+        return;
+    }
+
+    seeds.forEach(function(seedId, index)
+    {
+        const seed = tracksData.find(function(t)
+        {
+            return String(t.track_id) === String(seedId);
+        });
+
+        if (!seed)
+        {
+            return;
+        }
+
+        const card = document.createElement("div");
+        card.className = "seed-meta-card";
+
+        card.innerHTML =
+            "<div class='seed-meta-title'>Seed Track " + (index + 1) + "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Track</span>" +
+                "<div>" + safeValue(seed.title) + "</div>" +
+            "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Artist</span>" +
+                "<div>" + safeValue(seed.artist_name) + "</div>" +
+            "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Genre</span>" +
+                "<div>" + safeValue(seed.genre) + "</div>" +
+            "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Mood</span>" +
+                "<div>" + safeValue(seed.mood) + "</div>" +
+            "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Era</span>" +
+                "<div>" + safeValue(seed.era) + "</div>" +
+            "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Tempo</span>" +
+                "<div>" + safeValue(seed.tempo_bpm, " BPM") + "</div>" +
+            "</div>" +
+
+            "<div class='seed-meta-row'>" +
+                "<span class='muted'>Year</span>" +
+                "<div>" + safeValue(seed.year) + "</div>" +
+            "</div>";
+
+        container.appendChild(card);
+    });
+
+    if (container.innerHTML.trim() === "")
+    {
+        container.innerHTML = "<div class='muted'>No seed metadata available.</div>";
+    }
+}
+
+function renderSeedSummary(summary, seedLength)
+{
+    if (summary !== null && summary !== undefined)
+    {
+        if (summary.avg_seed_tempo_bpm !== undefined && summary.avg_seed_tempo_bpm !== null)
+        {
+            document.getElementById("avgSeedTempo").textContent =
+                formatNumber(summary.avg_seed_tempo_bpm, 2) + " BPM";
+        }
+        else
+        {
+            document.getElementById("avgSeedTempo").textContent = "-";
+        }
+    }
+    else
+    {
+        document.getElementById("avgSeedTempo").textContent = "-";
+    }
+
+    if (summary !== null && summary !== undefined)
+    {
+        if (summary.avg_seed_year !== undefined && summary.avg_seed_year !== null)
+        {
+            document.getElementById("avgSeedYear").textContent =
+                formatNumber(summary.avg_seed_year, 2);
+        }
+        else
+        {
+            document.getElementById("avgSeedYear").textContent = "-";
+        }
+    }
+    else
+    {
+        document.getElementById("avgSeedYear").textContent = "-";
+    }
+
+    if (seedLength !== null && seedLength !== undefined)
+    {
+        document.getElementById("seedCount").textContent = seedLength;
+    }
+    else
+    {
+        document.getElementById("seedCount").textContent = 0;
+    }
+}
+
+function renderPreferenceSummary(preferences)
+{
+    const box = document.getElementById("preferenceSummaryBox");
+
+    if (!preferences)
+    {
+        box.innerHTML = "<div class='muted'>No preference data available.</div>";
+        return;
+    }
+
+    const hasAny =
+        preferences.genre ||
+        preferences.mood ||
+        preferences.era ||
+        preferences.tempo_bpm !== null && preferences.tempo_bpm !== undefined && preferences.tempo_bpm !== "" ||
+        preferences.year !== null && preferences.year !== undefined && preferences.year !== "";
+
+    if (!hasAny)
+    {
+        box.innerHTML = "<div class='muted'>No preferences entered yet.</div>";
+        return;
+    }
+
+    box.innerHTML =
+        "<div class='preference-grid'>" +
+            "<div><span class='muted'>Genre</span><div>" + safeValue(preferences.genre) + "</div></div>" +
+            "<div><span class='muted'>Mood</span><div>" + safeValue(preferences.mood) + "</div></div>" +
+            "<div><span class='muted'>Era</span><div>" + safeValue(preferences.era) + "</div></div>" +
+            "<div><span class='muted'>Tempo</span><div>" + safeValue(preferences.tempo_bpm, " BPM") + "</div></div>" +
+            "<div><span class='muted'>Year</span><div>" + safeValue(preferences.year) + "</div></div>" +
+        "</div>";
+}
+
+function renderSimilarityChart(allDistribution, finalDistribution)
+{
+    if (!allDistribution || !allDistribution.counts || !allDistribution.bin_edges)
+    {
+        if (similarityChart)
+        {
+            similarityChart.destroy();
+            similarityChart = null;
+        }
+        return;
+    }
+
+    const labels = [];
+
+    for (let i = 0; i < allDistribution.bin_edges.length - 1; i++)
+    {
+        const start = Number(allDistribution.bin_edges[i]).toFixed(2);
+        const end = Number(allDistribution.bin_edges[i + 1]).toFixed(2);
+        labels.push(start + " to " + end);
+    }
+
+    const allCounts = allDistribution.counts || [];
+    let finalCounts;
+
+    if (finalDistribution !== null && finalDistribution !== undefined)
+    {
+        if (finalDistribution.counts !== null && finalDistribution.counts !== undefined)
+        {
+            finalCounts = finalDistribution.counts;
+        }
+        else
+        {
+            finalCounts = [];
+        }
+    }
+    else
+    {
+        finalCounts = [];
+    }
+
+    const ctx = document.getElementById("similarityChart");
+
+    if (similarityChart)
+    {
+        similarityChart.destroy();
+    }
+
+    similarityChart = new Chart(ctx,
+    {
+        type: "bar",
+        data:
+        {
+            labels: labels,
+            datasets: [
+            {
+                label: "All Candidates",
+                data: allCounts,
+                backgroundColor: "rgba(59, 130, 246, 0.35)"
+            },
+            {
+                label: "Final Recommendations",
+                data: finalCounts,
+                backgroundColor: "rgba(37, 99, 235, 0.95)"
+            }]
+        },
+        options:
+        {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales:
+            {
+                y:
+                {
+                    beginAtZero: true,
+                    title:
+                    {
+                        display: true,
+                        text: "Tracks"
+                    }
+                },
+                x:
+                {
+                    title:
+                    {
+                        display: true,
+                        text: "Similarity Score"
+                    }
+                }
+            }
+        }
+    });
+}
+
+async function fetchDistribution(seedIds, recommendationMode)
+{
+    const note = document.getElementById("distributionNote");
+
+    if (!seedIds || recommendationMode === "cold_start")
+    {
+        document.getElementById("distributionTotal").textContent = "-";
+        document.getElementById("distributionGroups").textContent = "0";
+        renderSimilarityChart(null, null);
+        note.textContent = "Distribution is unavailable for pure cold-start requests because there are no seed vectors.";
+        return;
+    }
+
+    try
+    {
+        const limit = document.getElementById("limitInput").value || "10";
+        const r = await fetch("/recommendations/distribution?seed_ids=" + encodeURIComponent(seedIds) + "&limit=" + encodeURIComponent(limit));
+        const data = await r.json();
+
+        if (!r.ok)
+        {
+            throw new Error(JSON.stringify(data));
+        }
+
+        document.getElementById("distributionTotal").textContent =
+            data.total !== undefined ? data.total : "-";
+
+        document.getElementById("distributionGroups").textContent =
+            data.groups !== undefined ? data.groups : "-";
+
+        renderSimilarityChart(
+            data.all_candidates_distribution,
+            data.final_recommendations_distribution
+        );
+
+        note.textContent = "Light blue shows all candidate tracks. Dark blue shows the final displayed recommendations after ranking.";
+    }
+    catch (error)
+    {
+        console.error(error);
+        document.getElementById("distributionTotal").textContent = "Error";
+        document.getElementById("distributionGroups").textContent = "Error";
+        note.textContent = "Could not load distribution.";
+    }
+}
+
+function playTrack(title, artist)
+{
+    const query = (title || "") + " " + (artist || "") + " official audio";
+    const url = "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
+    window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function toggleDetails(id)
+{
+    const row = document.getElementById(id);
+
+    if (!row)
+    {
+        return;
+    }
+
+    if (row.style.display === "table-row")
+    {
+        row.style.display = "none";
+    }
+    else
+    {
+        row.style.display = "table-row";
+    }
+}
+
+function buildReasonText(rec)
+{
+    const explanation = rec.explanation || {};
+    const perSeed = Array.isArray(explanation.per_seed) ? explanation.per_seed : [];
+
+    const preferenceEntry = perSeed.find(function(item)
+    {
+        return item && item.source === "preferences";
+    });
+
+    if (preferenceEntry && Array.isArray(preferenceEntry.reasons) && preferenceEntry.reasons.length > 0)
+    {
+        return preferenceEntry.reasons.join(", ");
+    }
+
+    const reasons = [];
+
+    if (explanation.genre_matches > 0)
+    {
+        reasons.push("genre match");
+    }
+
+    if (explanation.mood_matches > 0)
+    {
+        reasons.push("mood match");
+    }
+
+    if (explanation.era_matches > 0)
+    {
+        reasons.push("era match");
+    }
+
+    if (explanation.avg_tempo_match !== undefined && explanation.avg_tempo_match !== null && Number(explanation.avg_tempo_match) > 0.10)
+    {
+        reasons.push("close tempo");
+    }
+
+    if (explanation.avg_year_match !== undefined && explanation.avg_year_match !== null && Number(explanation.avg_year_match) > 0.05)
+    {
+        reasons.push("close year");
+    }
+
+    if (reasons.length === 0)
+    {
+        return "general similarity match";
+    }
+
+    return reasons.join(", ");
+}
+
+function buildPerSeedRows(perSeed)
+{
+    if (!Array.isArray(perSeed) || perSeed.length === 0)
+    {
+        return "<tr><td colspan='7' class='muted'>No per-seed explanation available.</td></tr>";
+    }
+
+    let html = "";
+
+    perSeed.forEach(function(item)
+    {
+        if (item.source === "preferences")
+        {
+            html +=
+                "<tr>" +
+                    "<td>Preferences</td>" +
+                    "<td colspan='5'>" + safeValue((item.reasons || []).join(", ")) + "</td>" +
+                    "<td>" + safeValue(formatNumber(item.score, 4)) + "</td>" +
+                "</tr>";
+            return;
+        }
+
+        const matches = item.matches || {};
+
+        html +=
+            "<tr>" +
+                "<td>" + safeValue(item.seed_track_id) + "</td>" +
+                "<td>" + safeValue(matches.genre_match) + "</td>" +
+                "<td>" + safeValue(matches.mood_match) + "</td>" +
+                "<td>" + safeValue(matches.era_match) + "</td>" +
+                "<td>" + safeValue(formatNumber(matches.tempo_match, 4)) + "</td>" +
+                "<td>" + safeValue(formatNumber(matches.year_match, 4)) + "</td>" +
+                "<td>" + safeValue(formatNumber(item.final_score, 4)) + "</td>" +
+            "</tr>";
+    });
+
+    return html;
+}
+
+function buildDetailsHtml(rec, explanation)
+{
+    const reasonText = buildReasonText(rec);
+
+    return (
+        "<div class='details-grid'>" +
+
+            "<div class='detail-card'>" +
+                "<h4>Candidate vs Input Summary</h4>" +
+
+                "<div class='kv'><span class='muted'>Candidate Tempo</span><div>" + safeValue(rec.tempo_bpm, " BPM") + "</div></div>" +
+                "<div class='kv'><span class='muted'>Candidate Year</span><div>" + safeValue(rec.year) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Average Seed Tempo</span><div>" + safeValue(explanation.avg_seed_tempo_bpm, " BPM") + "</div></div>" +
+                "<div class='kv'><span class='muted'>Average Seed Year</span><div>" + safeValue(explanation.avg_seed_year) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Average Tempo Match</span><div>" + safeValue(formatNumber(explanation.avg_tempo_match, 4)) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Average Year Match</span><div>" + safeValue(formatNumber(explanation.avg_year_match, 4)) + "</div></div>" +
+            "</div>" +
+
+            "<div class='detail-card'>" +
+                "<h4>Recommendation Summary</h4>" +
+
+                "<div class='kv'><span class='muted'>Genre Matches</span><div>" + safeValue(explanation.genre_matches) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Mood Matches</span><div>" + safeValue(explanation.mood_matches) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Era Matches</span><div>" + safeValue(explanation.era_matches) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Seed Count</span><div>" + safeValue(explanation.seed_count) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Final Similarity</span><div>" + safeValue(formatNumber(rec.similarity, 4)) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Mode</span><div>" + safeValue(rec.similarity_type) + "</div></div>" +
+                "<div class='kv'><span class='muted'>Confidence</span><div>" + safeValue(rec.confidence) + "</div></div>" +
+            "</div>" +
+
+        "</div>" +
+
+        "<div class='reason-box'>" +
+            "<strong>Reason:</strong> " + safeValue(reasonText) +
+        "</div>" +
+
+        "<div class='detail-card' style='margin-top:16px'>" +
+            "<h4>Preference Input Used</h4>" +
+            "<div class='preference-grid'>" +
+                "<div><span class='muted'>Genre</span><div>" + safeValue(explanation.preference_input ? explanation.preference_input.genre : null) + "</div></div>" +
+                "<div><span class='muted'>Mood</span><div>" + safeValue(explanation.preference_input ? explanation.preference_input.mood : null) + "</div></div>" +
+                "<div><span class='muted'>Era</span><div>" + safeValue(explanation.preference_input ? explanation.preference_input.era : null) + "</div></div>" +
+                "<div><span class='muted'>Tempo</span><div>" + safeValue(explanation.preference_input ? explanation.preference_input.tempo_bpm : null, " BPM") + "</div></div>" +
+                "<div><span class='muted'>Year</span><div>" + safeValue(explanation.preference_input ? explanation.preference_input.year : null) + "</div></div>" +
+            "</div>" +
+        "</div>" +
+
+        "<div class='detail-card' style='margin-top:16px'>" +
+            "<h4>Per-Seed Breakdown</h4>" +
+            "<table class='per-seed-table'>" +
+                "<thead>" +
+                    "<tr>" +
+                        "<th>Seed ID / Source</th>" +
+                        "<th>Genre</th>" +
+                        "<th>Mood</th>" +
+                        "<th>Era</th>" +
+                        "<th>Tempo Match</th>" +
+                        "<th>Year Match</th>" +
+                        "<th>Score</th>" +
+                    "</tr>" +
+                "</thead>" +
+                "<tbody>" +
+                    buildPerSeedRows(explanation.per_seed) +
+                "</tbody>" +
+            "</table>" +
+        "</div>"
+    );
+}
+
+function updateModeSummary(mode)
+{
+    const modeEl = document.getElementById("recommendationMode");
+    const descEl = document.getElementById("modeDescription");
+
+    if (mode === "seed_based")
+    {
+        modeEl.textContent = "Seed Based";
+        descEl.textContent = "Recommendations were generated from selected seed tracks.";
+        return;
+    }
+
+    if (mode === "hybrid")
+    {
+        modeEl.textContent = "Hybrid";
+        descEl.textContent = "Recommendations were generated using both seed tracks and metadata preferences.";
+        return;
+    }
+
+    if (mode === "cold_start")
+    {
+        modeEl.textContent = "Cold Start";
+        descEl.textContent = "Recommendations were generated from metadata preferences without seed tracks.";
+        return;
+    }
+
+    modeEl.textContent = "-";
+    descEl.textContent = "No recommendation request yet.";
+}
+
+function buildRecommendationUrl(seeds, prefs)
+{
+    const params = new URLSearchParams();
+
+    if (seeds.length > 0)
+    {
+        params.append("seed_ids", seeds.join(","));
+    }
+
+    if (prefs.genre)
+    {
+        params.append("genre", prefs.genre);
+    }
+
+    if (prefs.mood)
+    {
+        params.append("mood", prefs.mood);
+    }
+
+    if (prefs.era)
+    {
+        params.append("era", prefs.era);
+    }
+
+    if (prefs.tempo_bpm)
+    {
+        params.append("tempo_bpm", prefs.tempo_bpm);
+    }
+
+    if (prefs.year)
+    {
+        params.append("year", prefs.year);
+    }
+
+    if (prefs.tags)
+    {
+        params.append("tags", prefs.tags);
+    }
+
+    if (prefs.limit)
+    {
+        params.append("limit", prefs.limit);
+    }
+
+    return "/recommendations?" + params.toString();
+}
+
+async function loadRecommendations()
+{
+    const seeds = getSelectedSeeds();
+    const prefs = getPreferenceInputs();
+
+    const hasPreferences =
+        prefs.genre ||
+        prefs.mood ||
+        prefs.era ||
+        prefs.tempo_bpm ||
+        prefs.year ||
+        prefs.tags;
+
+    if (seeds.length === 0 && !hasPreferences)
+    {
+        alert("Select at least one seed track or enter at least one preference field.");
+        return;
+    }
+
+    renderSeedMetadata(seeds);
+    renderPreferenceSummary(prefs);
+
+    const url = buildRecommendationUrl(seeds, prefs);
+
+    try
+    {
+        const r = await fetch(url);
+        const data = await r.json();
+
+        if (!r.ok)
+        {
+            throw new Error(JSON.stringify(data));
+        }
+
+        renderSeedSummary(data.seed_summary || {}, seeds.length);
+        renderPreferenceSummary(data.preference_input || prefs);
+        updateModeSummary(data.recommendation_mode);
+
+        const recs = data.recommendations || [];
+        const tbody = document.getElementById("recommendationTableBody");
+        tbody.innerHTML = "";
+
+        if (recs.length === 0)
+        {
+            tbody.innerHTML = "<tr><td colspan='13' class='muted'>No recommendations returned.</td></tr>";
+        }
+        else
+        {
+            recs.forEach(function(rec, i)
+            {
+                const row = document.createElement("tr");
+                const detailsRow = document.createElement("tr");
+
+                const recTitle = rec.title || "-";
+                const recArtist = rec.artist_name || "-";
+                let similarity;
+
+                if (rec.similarity != null && !isNaN(rec.similarity)) {
+                    similarity = Number(rec.similarity).toFixed(4);
+                } else {
+                    similarity = "-";
+                }
+
+                const detailId = "detailRow_" + i;
+                const explanation = rec.explanation || {};
+                const reasonText = buildReasonText(rec);
+
+                row.innerHTML =
+                    "<td>" + (i + 1) + "</td>" +
+                    "<td>" + safeValue(recTitle) + "</td>" +
+                    "<td>" + safeValue(recArtist) + "</td>" +
+                    "<td>" + safeValue(rec.genre) + "</td>" +
+                    "<td>" + safeValue(rec.mood) + "</td>" +
+                    "<td>" + safeValue(rec.era) + "</td>" +
+                    "<td>" + safeValue(rec.tempo_bpm, " BPM") + "</td>" +
+                    "<td>" + safeValue(rec.year) + "</td>" +
+                    "<td>" + similarity + "</td>" +
+                    "<td>" + getModeLabel(rec.similarity_type) + "</td>" +
+                    "<td>" + getConfidenceLabel(rec.confidence) + "</td>" +
+                    "<td>" + safeValue(reasonText) + "<br><button class='details-btn' style='margin-top:8px'>Details</button></td>" +
+                    "<td><button class='play-btn'>Play</button></td>";
+
+                detailsRow.className = "details-row";
+                detailsRow.id = detailId;
+                detailsRow.innerHTML =
+                    "<td colspan='13' class='details-cell'>" +
+                        buildDetailsHtml(rec, explanation) +
+                    "</td>";
+
+                tbody.appendChild(row);
+                tbody.appendChild(detailsRow);
+
+                const playButton = row.querySelector(".play-btn");
+                playButton.addEventListener("click", function()
+                {
+                    playTrack(recTitle, recArtist);
+                });
+
+                const detailsButton = row.querySelector(".details-btn");
+                detailsButton.addEventListener("click", function()
+                {
+                    toggleDetails(detailId);
+                });
+            });
+        }
+
+        await fetchDistribution(seeds.join(","), data.recommendation_mode);
+    }
+    catch (error)
+    {
+        console.error(error);
+
+        document.getElementById("recommendationTableBody").innerHTML =
+            "<tr><td colspan='13' class='muted'>Error loading recommendations.</td></tr>";
+
+        document.getElementById("distributionTotal").textContent = "Error";
+        document.getElementById("distributionGroups").textContent = "Error";
+        document.getElementById("recommendationMode").textContent = "Error";
+        document.getElementById("modeDescription").textContent = "Could not load recommendations.";
+        renderSeedSummary({}, 0);
+    }
+}
+
+async function init()
+{
+    await fetchHealth();
+    await fetchTracks();
+}
+
+init();
+</script>
+
+</body>
+</html>
